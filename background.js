@@ -33,62 +33,70 @@ const readPrice = (changeType, absPriceDiff) => {
     );
 }
 
-// Sets icon badge to 'ON' by default
-chrome.browserAction.setBadgeText({ text: 'ON' })
-chrome.browserAction.setBadgeBackgroundColor({ color: '#FF9800' });
 
-/*
-If extension is OFF,
-
+// Sets icon bage to 'OFF' by default
 chrome.browserAction.setBadgeText({ text: 'OFF' })
 chrome.browserAction.setBadgeBackgroundColor({ color: 'black' });
 
-*/
+
+const startSoundNotification = () => {
+
+    // Sets icon badge to 'ON' 
+    chrome.browserAction.setBadgeText({ text: 'ON' })
+    chrome.browserAction.setBadgeBackgroundColor({ color: '#FF9800' });
 
 
-// Starts listening to BTC price changes on BitFlyer
-const DEFAULT_INTERVAL_SEC = 5
-let listenerIntervalSec = DEFAULT_INTERVAL_SEC
-let BTCPriceListener = setInterval(() => {
-    let request = new XMLHttpRequest();
-    request.open('GET', 'https://api.bitflyer.jp/v1/ticker?product_code=BTC_JPY', true);
-    request.responseType = 'json';
+    // Starts listening to BTC price changes on BitFlyer
+    const DEFAULT_INTERVAL_SEC = 5
+    let listenerIntervalSec = DEFAULT_INTERVAL_SEC
+    let BTCPriceListener = setInterval(() => {
+        let request = new XMLHttpRequest();
+        request.open('GET', 'https://api.bitflyer.jp/v1/ticker?product_code=BTC_JPY', true);
+        request.responseType = 'json';
 
-    request.onload = function () {
-        let data = this.response;
-        console.log(data.ltp);
-        currentPrice = data.ltp
-        if (previousPrice) {
-            let absPriceDiff = currentPrice - previousPrice
-            if (currentPrice > previousPrice) {
-                // Updates badge text and background color.
-                chrome.browserAction.setBadgeText({ text: '+' })
-                chrome.browserAction.setBadgeBackgroundColor({ color: 'green' });
+        request.onload = function () {
+            let data = this.response;
+            console.log(data.ltp);
+            // Sends BTC price to popup.html.
+            chrome.runtime.sendMessage({
+                msg: "ltp-updated",
+                data: {
+                    ltp: data.ltp,
+                    priceChange: currentPrice - previousPrice
+                }
+            });
+            currentPrice = data.ltp
+            if (previousPrice) {
+                let absPriceDiff = currentPrice - previousPrice
+                if (currentPrice > previousPrice) {
+                    // Updates badge text and background color.
+                    chrome.browserAction.setBadgeText({ text: '+' })
+                    chrome.browserAction.setBadgeBackgroundColor({ color: 'green' });
 
-                readPrice('プラス', absPriceDiff)
-                console.log('UP')
-                sound_down.pause()
-                previousPrice = data.ltp
-            } else if (currentPrice < previousPrice) {
-                // Updates badge text and background color.
-                chrome.browserAction.setBadgeText({ text: '-' })
-                chrome.browserAction.setBadgeBackgroundColor({ color: 'red' });
+                    readPrice('プラス', absPriceDiff)
+                    console.log('UP')
+                    sound_down.pause()
 
-                readPrice('マイナス', absPriceDiff)
-                console.log('DOWN')
-                sound_samba.pause();
-                previousPrice = data.ltp
+                    previousPrice = data.ltp
+                } else if (currentPrice < previousPrice) {
+                    // Updates badge text and background color.
+                    chrome.browserAction.setBadgeText({ text: '-' })
+                    chrome.browserAction.setBadgeBackgroundColor({ color: 'red' });
+
+                    readPrice('マイナス', absPriceDiff)
+                    console.log('DOWN')
+                    sound_samba.pause();
+
+                    previousPrice = data.ltp
+                } else {
+                    console.log('NO CHANGE')
+                }
             } else {
-                console.log('NO CHANGE')
+                previousPrice = data.ltp
             }
-        } else {
-            previousPrice = data.ltp
-        }
-    };
+        };
 
-    request.send();
-}, listenerIntervalSec * 1000)
+        request.send();
+    }, listenerIntervalSec * 1000)
 
-
-
-
+}
