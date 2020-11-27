@@ -33,11 +33,23 @@ const readPrice = (changeType, absPriceDiff) => {
     );
 }
 
+// Sets icon badge to 'ON' by default
+chrome.browserAction.setBadgeText({ text: 'ON' })
+chrome.browserAction.setBadgeBackgroundColor({ color: '#FF9800' });
+
+/*
+If extension is OFF,
+
+chrome.browserAction.setBadgeText({ text: 'OFF' })
+chrome.browserAction.setBadgeBackgroundColor({ color: 'black' });
+
+*/
+
 
 // Starts listening to BTC price changes on BitFlyer
 const DEFAULT_INTERVAL_SEC = 5
 let listenerIntervalSec = DEFAULT_INTERVAL_SEC
-setInterval(() => {
+let BTCPriceListener = setInterval(() => {
     let request = new XMLHttpRequest();
     request.open('GET', 'https://api.bitflyer.jp/v1/ticker?product_code=BTC_JPY', true);
     request.responseType = 'json';
@@ -49,11 +61,19 @@ setInterval(() => {
         if (previousPrice) {
             let absPriceDiff = currentPrice - previousPrice
             if (currentPrice > previousPrice) {
+                // Updates badge text and background color.
+                chrome.browserAction.setBadgeText({ text: '+' })
+                chrome.browserAction.setBadgeBackgroundColor({ color: 'green' });
+
                 readPrice('プラス', absPriceDiff)
                 console.log('UP')
                 sound_down.pause()
                 previousPrice = data.ltp
             } else if (currentPrice < previousPrice) {
+                // Updates badge text and background color.
+                chrome.browserAction.setBadgeText({ text: '-' })
+                chrome.browserAction.setBadgeBackgroundColor({ color: 'red' });
+
                 readPrice('マイナス', absPriceDiff)
                 console.log('DOWN')
                 sound_samba.pause();

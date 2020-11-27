@@ -2,12 +2,81 @@
 <html lang="jp">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" ; content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" ; content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    hello
+
+    <h1 class="outline-style">Bitcoin Samba Ticker 現在の価格</h1>
+
+    <h1 class="outline-style">— YEN/BTC</h1>
+    <div class="description-wrapper">
+        <p>
+            データはbitFlyer Lightning APIより取得されています。
+            本拡張機能の開発者（以下、開発者）はbitFlyer.incとは関係していません。
+            価格変化の正確性に関して開発者は責任を負わないものとします。
+            本拡張機能のデータは5秒間隔で取得されています。
+            より正確な価格はbitFlyerまたはその他の取引業者のデータをご確認ください。
+        </p>
+    </div>
+
+
+    <h3><span class="outline-style">開発者 Kanta Yamaoka</span></h6>
+
+    
+    <div class="credits-wrapper">
+        <h3>Musical Credits - 心からの感謝を申し上げます</h3>
+        <h6>価格上昇時に流れる音源</h6>
+        <p>Author: Takashi Kobayashi/小林 卓史/コバヤシ タカシ）</p>
+        <p>Author nickname：こばっと／Kobat</p>
+        <p>Sound profile: https://dova-s.jp/bgm/play11477.html</p>
+        <p>Autor's profile: https://www.kobat-music.com/</p>
+    </div>
+
+    <div class="credits-wrapper">
+        <h6>価格下落時に流れる音源</h6>
+        <p>Author: Notzan ACT</p>
+        <p>Sound profile: https://dova-s.jp/bgm/play11949.html</p>
+        <p>Autor's profile: https://dova-s.jp/_contents/author/profile362.html</p>
+    </div>
 </body>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .outline-style{
+        text-shadow:1px 1px 0 black,-1px 1px 0 black,1px -1px 0 black,-1px -1px 0 black;
+    }
+
+
+    .credits-wrapper {
+        margin: 10px;
+        color: black;
+    }
+
+    .description-wrapper {
+        margin: 10px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 10px;
+    }
+
+    body {
+
+        background-color: #FF9800;
+        color: white;
+        width: 600px;
+    }
+</style>
 
 </html>
