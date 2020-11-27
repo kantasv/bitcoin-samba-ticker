@@ -4,19 +4,8 @@
     "manifest_version": 2,
     "permissions": [
         "declarativeContent",
-        "storage"
-    ],
-    "content_scripts": [
-        {
-            "matches": [
-                "https://api.bitflyer.jp/*"
-            ],
-            "js": [
-                "bitflyerSamba.js"
-            ],
-            "all_frames": true,
-            "run_at": "document_end"
-        }
+        "storage",
+        "https://api.bitflyer.jp/v1/ticker?product_code=BTC_JPY"
     ],
     "background":{
         "scripts":["background.js"],
