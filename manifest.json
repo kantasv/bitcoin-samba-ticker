@@ -5,7 +5,7 @@
     "permissions": [
         "declarativeContent",
         "storage",
-        "https://api.bitflyer.jp/v1/ticker?product_code=BTC_JPY"
+        "https://api.bitflyer.jp/*"
     ],
     "background":{
         "scripts":["background.js"],
