@@ -33,12 +33,14 @@ const readPrice = (changeType, absPriceDiff) => {
     );
 }
 
+// Sets sound notification OFF by default
+let isSoundNotificationOn = false
 
 // Sets icon bage to 'OFF' by default
 chrome.browserAction.setBadgeText({ text: 'OFF' })
 chrome.browserAction.setBadgeBackgroundColor({ color: 'black' });
 
-
+// Starts sound notification interval and returns inteval id
 const startSoundNotification = () => {
 
     // Sets icon badge to 'ON' 
@@ -99,4 +101,34 @@ const startSoundNotification = () => {
         request.send();
     }, listenerIntervalSec * 1000)
 
+    return BTCPriceListener
 }
+
+// Stores interval id to make it possible to stop it later.
+let intervalID = ''
+
+// Listens to sound-notification-toggled.
+chrome.runtime.onMessage.addListener(
+    function (request) {
+        if (request.msg === "sound-notification-toggled") {
+            if (!isSoundNotificationOn) {
+                intervalID = startSoundNotification()
+                alert('音声通知をONにしました')
+                isSoundNotificationOn = true
+            } else if (isSoundNotificationOn) {
+                // Stops interval.
+                alert('音声通知をOFFにしました')
+                clearInterval(intervalID)
+                isSoundNotificationOn = false
+
+                // Forces playng sound to stop.
+                sound_samba.pause()
+                sound_down.pause()
+
+                // Sets icon bage to 'OFF'
+                chrome.browserAction.setBadgeText({ text: 'OFF' })
+                chrome.browserAction.setBadgeBackgroundColor({ color: 'black' });
+            }
+        }
+    }
+);
