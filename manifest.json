@@ -1,15 +1,15 @@
 {
-    "name": "Bitcoin Sambda 価格監視ツール",
+    "name": "Bitcoin Samba 価格監視ツール",
     "version": "1.0.0",
     "manifest_version": 2,
     "permissions": [
-        "https://api.bitflyer.jp/*"
+        "https://api.bitflyer.jp/v1/ticker?product_code=BTC_JPY"
     ],
     "background": {
         "scripts": [
             "background.js"
         ],
-        "persistent": false
+        "persistent": true
     },
     "browser_action": {
         "default_popup": "popup.html"
