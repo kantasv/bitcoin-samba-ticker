@@ -1,5 +1,5 @@
 {
-    "name": "ビットコインサンバ！",
+    "name": "Bitcoin Sambda 価格監視ツール",
     "version": "1.0.0",
     "manifest_version": 2,
     "permissions": [
@@ -9,12 +9,12 @@
         "scripts": [
             "background.js"
         ],
-        "persistent": true
+        "persistent": false
     },
     "browser_action": {
         "default_popup": "popup.html"
     },
-    "description": "ビットコインで楽しくサンバ！",
+    "description": "ビットコインの価格上昇でサンバ、下落で悲しい音楽を流し、価格変化を音声で読み上げます。5秒ごとに価格更新。ON/OFF切り替え可能。",
     "icons": {
         "16": "icons/icon16.png",
         "48": "icons/icon48.png",
